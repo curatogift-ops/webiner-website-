@@ -144,18 +144,62 @@ h1,h2,h3,h4,h5,h6 {
 }
 .hero-desc {
     color: var(--text-muted); font-size: 1.05rem;
-    margin-bottom: 0; line-height: 1.6; max-width: 480px;
+    margin-bottom: 24px; line-height: 1.6; max-width: 480px;
 }
 
-/* Hero Cards Stack */
+/* Hero Checklist */
+.hero-checklist {
+    margin-bottom: 32px; list-style: none; padding: 0;
+}
+.hero-checklist li {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 0.95rem; color: #374151; margin-bottom: 12px; font-weight: 500;
+}
+.hero-checklist li i {
+    color: #14B8A6; font-size: 1.1rem; /* Greenish teal check icon */
+}
+
+/* Hero CTA Button */
+.btn-hero-cta {
+    display: inline-block; background: #14B8A6; /* Teal color from screenshot */
+    color: #fff; padding: 16px 32px; font-size: 1.1rem; font-weight: 700;
+    border-radius: 8px; text-decoration: none; transition: 0.3s;
+    font-family: var(--font-heading); box-shadow: 0 10px 20px rgba(20, 184, 166, 0.2);
+    width: 100%; max-width: 320px; text-align: center;
+}
+.btn-hero-cta:hover {
+    background: #0D9488; transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(20, 184, 166, 0.3);
+}
+
+.hero-seats-text {
+    font-size: 0.85rem; color: var(--text-light); margin-top: 12px;
+    font-weight: 500; display: flex; align-items: center; gap: 6px;
+}
+.hero-seats-text::before {
+    content: ''; display: inline-block; width: 6px; height: 6px;
+    background: #64748B; border-radius: 50%;
+}
+
+/* Hero Right Card Container */
 .hero-right { display: flex; justify-content: center; }
+.hero-right-card {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid #fff;
+    border-radius: 24px;
+    padding: 32px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.08); /* Soft large shadow */
+    width: 100%; max-width: 480px;
+}
+
 .hero-cards-stack {
-    display: flex; flex-direction: column; gap: 24px; width: 100%; max-width: 420px;
+    display: flex; flex-direction: column; gap: 24px; width: 100%;
 }
 .hero-card {
     display: flex; align-items: center; gap: 20px;
     background: #fff; border-radius: 16px;
-    padding: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+    padding: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); /* Lighter shadow inside */
     border: 1px solid rgba(0,0,0,0.03);
     transition: transform 0.3s ease; opacity: 1; visibility: visible; /* Force visible */
 }
@@ -542,11 +586,17 @@ h1,h2,h3,h4,h5,h6 {
     .hamburger.open span:nth-child(2) { opacity: 0; }
     .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
 
-    .hero { padding: 90px 0 60px; }
+    .hero { padding: 40px 0 60px; } /* Adjusted padding */
     .hero-grid { grid-template-columns: 1fr; gap: 40px; }
-    .hero-left h1 { font-size: 2.2rem; text-align: center; }
-    .hero-desc { text-align: center; margin: 0 auto 24px; }
-    .hero-badge { margin: 0 auto 24px; display: flex; width: fit-content; }
+    
+    /* LEFT ALIGNMENT FIXES */
+    .hero-left { text-align: left; }
+    .hero-left h1 { font-size: 2.2rem; text-align: left; }
+    .hero-desc { text-align: left; margin: 0 0 24px 0; }
+    .hero-badge { margin: 0 0 24px 0; display: inline-flex; width: auto; }
+    .hero-checklist li { justify-content: flex-start; }
+    
+    .btn-hero-cta { width: 100%; max-width: 100%; } /* Full width button */
     
     .hero-right { justify-content: center; }
     .hero-cards-stack { max-width: 100%; }
@@ -560,7 +610,7 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 @media (max-width: 480px) {
-    .hero-left h1 { font-size: 1.9rem; }
+    .hero-left h1 { font-size: 2rem; } /* Slightly larger for impact */
     .sec-title { font-size: 1.45rem; }
     .btn-primary-nav { padding: 12px 24px; font-size: 0.85rem; }
     .reg-price { font-size: 3.2rem; }
