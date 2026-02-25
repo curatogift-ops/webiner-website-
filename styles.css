@@ -537,7 +537,15 @@ h1,h2,h3,h4,h5,h6 {
 .faq-item:hover .faq-q {
     color: var(--primary); /* Proper text color change on hover */
 }
-.faq-a p { padding: 0 0 24px; font-size: 0.95rem; color: var(--text-muted); opacity: 1; }
+.faq-a {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+}
+.faq-a p { padding: 0 0 24px; font-size: 0.95rem; color: var(--text-muted); opacity: 1; margin: 0; }
+.faq-item.active .faq-a { max-height: 500px; }
+.faq-q i { transition: transform 0.3s ease; color: var(--text-light); font-size: 0.9rem; }
+.faq-item.active .faq-q i { transform: rotate(180deg); color: var(--primary); }
 
 /* ====== FOOTER ====== */
 .footer {
