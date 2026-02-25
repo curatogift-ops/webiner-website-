@@ -117,7 +117,7 @@ h1,h2,h3,h4,h5,h6 {
 .promo-banner {
     background: var(--gradient); color: #fff;
     padding: 10px 0; font-family: var(--font-heading);
-    position: relative; z-index: 1001; /* Above header if needed, but placed below in HTML flow */
+    position: relative; z-index: 990; /* Adjusted to be below the header and nav dropdown */
     margin-top: 72px; /* Offset for fixed header */
 }
 .promo-inner {
