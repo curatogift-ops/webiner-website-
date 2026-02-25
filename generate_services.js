@@ -129,7 +129,7 @@ const pages = [
             <h1 style="font-size: 2.5rem; color: #0F1929; margin-bottom: 30px; text-align: center;"><i class="fas fa-file-alt" style="color: #2563EB;"></i> Professional Resume & Cover Letter Services</h1>
             <p style="text-align: center; color: #475569; max-width: 800px; margin: 0 auto 50px; font-size: 1.1rem;">Boost your job search with professionally crafted resumes and cover letters designed to pass Applicant Tracking Systems (ATS) and impress recruiters.</p>
             
-            <div class="services-grid-3">
+            <div class="services-grid-4">
                 <div style="padding: 40px 30px; border: 1px solid #E2E8F0; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
                     <div style="font-size: 2rem; color: #2563EB; margin-bottom: 20px;"><i class="fas fa-laptop-code"></i></div>
                     <h3 style="color: #0F1929; margin-bottom: 15px;">ATS Professional Resume</h3>
@@ -145,15 +145,38 @@ const pages = [
                 </div>
                 
                 <div style="padding: 40px 30px; border: 1px solid #E2E8F0; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
+                    <div style="font-size: 2rem; color: #10B981; margin-bottom: 20px;"><i class="fas fa-id-card"></i></div>
+                    <h3 style="color: #0F1929; margin-bottom: 15px;">Non-ATS Professional Resume</h3>
+                    <p style="font-size: 0.95rem; color: #64748B; margin-bottom: 20px;">Modern, highly visual layout showcasing your skills perfectly for direct email submissions.</p>
+                    <ul style="font-size: 0.95rem; margin-bottom: 30px; line-height: 1.8; padding-left: 0;">
+                        <li><i class="fas fa-rupee-sign" style="color:#64748B;"></i> <strong>299</strong> – 0 to 2 Yrs Exp</li>
+                        <li><i class="fas fa-rupee-sign" style="color:#64748B;"></i> <strong>599</strong> – 2 to 5 Yrs Exp</li>
+                        <li><i class="fas fa-rupee-sign" style="color:#64748B;"></i> <strong>899</strong> – 6 to 12 Yrs Exp</li>
+                        <li><i class="fas fa-rupee-sign" style="color:#64748B;"></i> <strong>1099</strong> – 12 to 15 Yrs Exp</li>
+                        <li><i class="fas fa-rupee-sign" style="color:#64748B;"></i> <strong>1599</strong> – 15 to 30 Yrs Exp</li>
+                    </ul>
+                    <a href="services.html#inquiryForm" class="btn-blue-cta" style="width: 100%; text-align: center; padding: 12px; background: #059669;">Get Resume</a>
+                </div>
+                
+                <div style="padding: 40px 30px; border: 1px solid #E2E8F0; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
                     <div style="font-size: 2rem; color: #F59E0B; margin-bottom: 20px;"><i class="fas fa-globe-europe"></i></div>
                     <h3 style="color: #0F1929; margin-bottom: 15px;">Gulf/Europass Resume</h3>
                     <p style="font-size: 0.95rem; color: #64748B; margin-bottom: 20px;">Official CV format for EU and Gulf jobs. Ideal for visas and higher education.</p>
                     <div style="font-size: 2rem; color: #0F1929; font-weight: 800; margin-bottom: 20px;">₹1099</div>
-                    <ul style="font-size: 0.95rem; margin-bottom: 30px; line-height: 1.8; color: #475569;">
+                    <ul style="font-size: 0.95rem; margin-bottom: 20px; line-height: 1.8; color: #475569;">
                         <li><i class="fas fa-check text-green"></i> EU-standard layout</li>
                         <li><i class="fas fa-check text-green"></i> Clean structured presentation</li>
                         <li><i class="fas fa-check text-green"></i> Editable Word + PDF</li>
                     </ul>
+                    
+                    <div style="margin-bottom: 25px;">
+                        <span style="font-size: 0.9rem; font-weight: 600; color: #0F1929; display: block; margin-bottom: 10px;">View Europass Samples:</span>
+                        <div style="display: flex; gap: 10px;">
+                            <a href="Ghanshyam_Mishra.pdf" target="_blank" style="font-size: 0.85rem; color: #2563EB; border: 1px solid #2563EB; padding: 6px 10px; border-radius: 6px; text-decoration: none; flex: 1; text-align: center; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.3s;"><i class="fas fa-file-pdf"></i> Sample 1</a>
+                            <a href="Sample%20CV.pdf" target="_blank" style="font-size: 0.85rem; color: #2563EB; border: 1px solid #2563EB; padding: 6px 10px; border-radius: 6px; text-decoration: none; flex: 1; text-align: center; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.3s;"><i class="fas fa-file-pdf"></i> Sample 2</a>
+                        </div>
+                    </div>
+
                     <a href="services.html#inquiryForm" class="btn-blue-cta" style="width: 100%; text-align: center; padding: 12px;">Get Resume</a>
                 </div>
                 

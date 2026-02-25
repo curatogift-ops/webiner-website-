@@ -150,8 +150,68 @@ document.addEventListener('DOMContentLoaded', () => {
                     btn.style.background = ''; 
                     btn.disabled = false; 
                     form.reset(); 
-                }, 2000);
-            }, 1500);
+                }, 1000);
+            }, 1000);
+        });
+    }
+
+    // Lead Popup Logic
+    const leadPopup = document.getElementById('leadPopup');
+    const closeLeadPopup = document.getElementById('closeLeadPopup');
+    const openPopupBtns = document.querySelectorAll('.open-popup-btn');
+
+    if (leadPopup && closeLeadPopup) {
+        // Show after 10 seconds
+        setTimeout(() => {
+            leadPopup.classList.add('show');
+        }, 10000); // 10 seconds
+
+        // Open on button click
+        openPopupBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                leadPopup.classList.add('show');
+            });
+        });
+
+        // Close on X click
+        closeLeadPopup.addEventListener('click', () => {
+            leadPopup.classList.remove('show');
+        });
+
+        // Close on clicking outside the box
+        leadPopup.addEventListener('click', (e) => {
+            if (e.target === leadPopup) {
+                leadPopup.classList.remove('show');
+            }
+        });
+    }
+
+    // Popup Form Submission
+    const popupRegisterForm = document.getElementById('popupRegisterForm');
+    if (popupRegisterForm) {
+        popupRegisterForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const btn = popupRegisterForm.querySelector('.btn-pay-now');
+            const orig = btn.innerHTML;
+            
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            btn.style.background = '#16a34a'; // success color
+            btn.disabled = true;
+            
+            // Simulating API call/Redirect
+            setTimeout(() => { 
+                btn.innerHTML = '<i class="fas fa-check-circle"></i> Redirecting...';
+                setTimeout(() => {
+                    window.location.href = "https://chat.whatsapp.com/your-community-invite-link"; // Redirect
+                    // Reset
+                    btn.innerHTML = orig; 
+                    btn.style.background = ''; 
+                    btn.disabled = false;
+                    popupRegisterForm.reset();
+                    leadPopup.classList.remove('show');
+                }, 1000);
+            }, 1000);
         });
     }
 });
