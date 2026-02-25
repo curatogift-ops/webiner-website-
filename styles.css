@@ -251,10 +251,11 @@ h1,h2,h3,h4,h5,h6 {
 .ats-item-header span { color: #64748B; font-size: 0.8rem; }
 .ats-bullets { font-size: 0.85rem; padding-left: 20px; color: #475569; line-height: 1.5; margin: 0; }
 .ats-bullets li { margin-bottom: 4px; justify-content: flex-start; }
-.ats-stamp { position: absolute; top: -20px; right: -20px; z-index: 10; transform: rotate(15deg); }
-.stamp-circle { background: #10B981; color: #fff; width: 90px; height: 90px; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 800; font-size: 1.5rem; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.4); line-height: 1.1; border: 4px solid #fff; }
-.stamp-circle i { font-size: 1.2rem; }
-.stamp-circle span { font-size: 0.6rem; font-weight: 600; letter-spacing: 1px; }
+.ats-stamp { position: absolute; top: -25px; right: -15px; z-index: 10; transform: rotate(15deg); }
+.stamp-circle { background: #10B981; color: #fff; width: 95px; height: 95px; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.4); border: 4px solid #fff; gap: 2px; text-align: center; }
+.stamp-circle i { font-size: 1rem; color: #fff; }
+.stamp-score { font-size: 1.7rem; font-weight: 800; line-height: 1; color: #fff; }
+.stamp-circle span { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.5px; line-height: 1; text-transform: uppercase; }
 
 /* ====== SECTION TITLES ====== */
 .sec-title {
@@ -637,12 +638,14 @@ h1,h2,h3,h4,h5,h6 {
 /* ====== RESPONSIVE ====== */
 @media (max-width: 1024px) {
     .lead-popup-content { flex-direction: column; }
-    .lead-popup-left, .lead-popup-right { width: 100%; padding: 40px 30px; }
-    .lead-popup-left { padding: 30px 40px; }
-    .lead-popup-left h2 { font-size: 2.8rem; margin-bottom: 10px; }
-    .pl-sub { margin-bottom: 25px; }
-    .pl-secure { padding-top: 20px; }
-    .lead-popup-box { max-height: 90vh; overflow-y: auto; }
+    .lead-popup-left, .lead-popup-right { width: 100%; padding: 25px 30px; }
+    .lead-popup-left h2 { font-size: 2.2rem; margin-bottom: 8px; }
+    .pl-sub { margin-bottom: 15px; font-size: 0.95rem; }
+    .pl-secure { padding-top: 15px; }
+    .lead-popup-right { padding-top: 20px; }
+    .lead-popup-right h3 { font-size: 1.8rem; margin-bottom: 5px; }
+    .lead-popup-right p { margin-bottom: 15px; }
+    .lead-popup-box { max-height: 95vh; overflow-y: auto; overflow-x: hidden; }
 
     .hero-left h1 { font-size: 2.8rem; }
     .learn-cards { grid-template-columns: repeat(2, 1fr); }
@@ -749,4 +752,37 @@ h1,h2,h3,h4,h5,h6 {
     .header { padding: 0; }
     .container { padding: 0 20px; }
     .btn-pay-now { font-size: 0.95rem; }
+
+    /* Compact lead popup for mobile single-screen view */
+    .lead-popup-overlay { padding: 5px; }
+    .lead-popup-box { max-height: 98vh; display: flex; flex-direction: column; overflow-y: auto; overflow-x: hidden; border-radius: 12px; }
+    
+    .lead-popup-left, .lead-popup-right { padding: 10px 15px; width: 100%; box-sizing: border-box; }
+    .lead-popup-left { padding-top: 15px; } /* Space for close btn */
+    
+    .pl-badge { margin-bottom: 4px; font-size: 0.7rem; padding: 2px 8px; }
+    .lead-popup-left h2 { font-size: 1.8rem; margin-bottom: 2px; }
+    .pl-sub { font-size: 0.75rem; margin-bottom: 8px; }
+    
+    .pl-list { font-size: 0.75rem; gap: 4px; margin-bottom: 5px; }
+    .pl-list li { margin: 0; padding: 0; display: flex; align-items: center; }
+    .pl-list li i { font-size: 0.65rem; margin-right: 6px; }
+    .pl-secure { font-size: 0.7rem; padding-top: 5px; margin-top: 2px; }
+    
+    .lead-popup-right { padding-top: 10px; padding-bottom: 10px; }
+    .lead-popup-right h3 { font-size: 1.2rem; margin-bottom: 2px; }
+    .lead-popup-right p { font-size: 0.7rem; margin-bottom: 8px; line-height: 1.2; }
+    
+    #popupRegisterForm { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 10px; }
+    #popupRegisterForm .form-row { display: contents; }
+    #popupRegisterForm > .form-group:first-child { grid-column: span 2; }
+    #popupRegisterForm .form-group { margin-bottom: 0; }
+    #popupRegisterForm .form-group label { font-size: 0.7rem; margin-bottom: 2px; }
+    #popupRegisterForm .form-group input, 
+    #popupRegisterForm .form-group select { padding: 4px 8px; font-size: 0.75rem; border-radius: 4px; width: 100%; box-sizing: border-box; }
+    
+    #popupRegisterForm .btn-pay-now { grid-column: span 2; padding: 10px; font-size: 0.85rem; margin-top: 5px; margin-bottom: 0; }
+    #popupRegisterForm .form-note { grid-column: span 2; font-size: 0.65rem; margin-top: 2px; }
+    
+    .lead-popup-close { top: 5px; right: 5px; width: 24px; height: 24px; font-size: 1.2rem; background: rgba(0,0,0,0.1); }
 }

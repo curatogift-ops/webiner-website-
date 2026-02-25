@@ -161,10 +161,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const openPopupBtns = document.querySelectorAll('.open-popup-btn');
 
     if (leadPopup && closeLeadPopup) {
-        // Show after 10 seconds
+        // Show after 2 minutes
         setTimeout(() => {
             leadPopup.classList.add('show');
-        }, 10000); // 10 seconds
+        }, 120000); // 2 minutes
 
         // Open on button click
         openPopupBtns.forEach(btn => {
