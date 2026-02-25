@@ -9,6 +9,20 @@ document.addEventListener('DOMContentLoaded', () => {
             nav.classList.toggle('open');
         });
         nav.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                // Handle mobile dropdown toggle without navigating
+                if (window.innerWidth <= 768 && link.nextElementSibling && link.nextElementSibling.classList.contains('dropdown-menu')) {
+                    e.preventDefault();
+                    link.parentElement.classList.toggle('mobile-active');
+                    return; 
+                }
+                hamburger.classList.remove('open');
+                nav.classList.remove('open');
+            });
+        });
+        
+        // Close nav when an inner dropdown item is clicked
+        nav.querySelectorAll('.dropdown-item').forEach(link => {
             link.addEventListener('click', () => {
                 hamburger.classList.remove('open');
                 nav.classList.remove('open');
