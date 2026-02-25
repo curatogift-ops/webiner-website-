@@ -113,9 +113,35 @@ h1,h2,h3,h4,h5,h6 {
     border-radius: 2px; transition: 0.3s;
 }
 
+/* ====== PROMO BANNER ====== */
+.promo-banner {
+    background: var(--gradient); color: #fff;
+    padding: 10px 0; font-family: var(--font-heading);
+    position: relative; z-index: 1001; /* Above header if needed, but placed below in HTML flow */
+    margin-top: 72px; /* Offset for fixed header */
+}
+.promo-inner {
+    display: flex; align-items: center; justify-content: center;
+    gap: 16px; flex-wrap: wrap; text-align: center;
+}
+.promo-text { font-size: 0.95rem; font-weight: 500; }
+.promo-timer {
+    font-weight: 800; background: rgba(0,0,0,0.2);
+    padding: 4px 8px; border-radius: 4px; letter-spacing: 1px;
+}
+.btn-promo {
+    background: #fff; color: var(--primary);
+    padding: 6px 16px; border-radius: 50px; font-weight: 700;
+    font-size: 0.85rem; text-transform: uppercase;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.btn-promo:hover {
+    transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
+
 /* ====== HERO ====== */
 .hero {
-    background: #fff; padding: 110px 0 20px; /* Reduced bottom padding */
+    background: #fff; padding: 40px 0 20px; /* Reduced top padding due to banner */
     position: relative; overflow: hidden;
     background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
     background-size: 40px 40px;
@@ -537,9 +563,39 @@ h1,h2,h3,h4,h5,h6 {
     color: #CBD5E1; font-size: 0.9rem; display: flex; align-items: center; gap: 10px;
 }
 .footer-contact a:hover { color: #fff; }
+.f-socials { display: flex; gap: 12px; margin-top: 8px; }
+.f-socials a {
+    width: 36px; height: 36px; border-radius: 50%; background: #1E293B;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; transition: 0.3s;
+}
+.f-socials a:hover { background: var(--primary); transform: translateY(-2px); }
+
+/* Address & Map */
+.footer-address {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 40px;
+    padding: 40px 0; border-bottom: 1px solid #1E293B;
+}
+.address-details h4 { color: #fff; font-size: 1.1rem; margin-bottom: 16px; font-weight: 600; }
+.address-details p { color: #94A3B8; font-size: 0.9rem; line-height: 1.6; margin-bottom: 12px; display: flex; align-items: flex-start; gap: 10px; }
+.address-details p i { color: var(--accent); margin-top: 4px; }
+.address-map { border-radius: 12px; overflow: hidden; }
+
 .footer-bottom {
     padding: 24px 0; text-align: center; font-size: 0.85rem; color: #64748B;
 }
+
+/* ====== WHATSAPP FLOAT ====== */
+.whatsapp-float {
+    position: fixed; bottom: 30px; right: 30px;
+    width: 60px; height: 60px; background-color: #25D366; color: #FFF;
+    border-radius: 50px; text-align: center; font-size: 30px;
+    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+    z-index: 100;
+    display: flex; align-items: center; justify-content: center;
+    transition: 0.3s;
+}
+.whatsapp-float:hover { background-color: #128C7E; transform: scale(1.1); color: #fff; }
 
 /* ====== RESPONSIVE ====== */
 @media (max-width: 1024px) {
@@ -607,6 +663,11 @@ h1,h2,h3,h4,h5,h6 {
     .faq-q { font-size: 1rem; }
     
     .why-desc { font-size: 1rem; }
+    
+    .footer-address { grid-template-columns: 1fr; gap: 24px; padding: 24px 0; }
+    .whatsapp-float { bottom: 20px; right: 20px; width: 50px; height: 50px; font-size: 26px; }
+    .promo-banner { margin-top: 72px; padding: 12px; }
+    .promo-inner { flex-direction: column; gap: 10px; }
 }
 
 @media (max-width: 480px) {

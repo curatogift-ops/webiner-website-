@@ -90,17 +90,54 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { threshold: 0.5 }).observe(scoreEl);
     }
 
+    // Promo Timer (15 Minutes Countdown)
+    const promoTimerEl = document.getElementById('promoTimer');
+    if (promoTimerEl) {
+        let timeInSeconds = 15 * 60; // 15 minutes
+        
+        const updateTimer = () => {
+            const minutes = Math.floor(timeInSeconds / 60);
+            const seconds = timeInSeconds % 60;
+            
+            promoTimerEl.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            if (timeInSeconds > 0) {
+                timeInSeconds--;
+            } else {
+                // Reset timer or keep at 00:00
+                timeInSeconds = 15 * 60; // Loop for demo purposes
+            }
+        };
+        
+        setInterval(updateTimer, 1000);
+        updateTimer();
+    }
+
     // Form Submit
     const form = document.getElementById('registerForm');
     if (form) {
         form.addEventListener('submit', e => {
             e.preventDefault();
-            const btn = form.querySelector('.btn-pay');
+            const btn = form.querySelector('.btn-pay-now');
             const orig = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-check-circle"></i> Registration Successful!';
+            
+            // Show success and WhatsApp group link
+            btn.innerHTML = '<i class="fas fa-check-circle"></i> Redirecting to WhatsApp...';
             btn.style.background = '#16a34a';
             btn.disabled = true;
-            setTimeout(() => { btn.innerHTML = orig; btn.style.background = ''; btn.disabled = false; form.reset(); }, 3000);
+            
+            setTimeout(() => { 
+                // Redirect logic for WhatsApp Community after payment (Demo link here)
+                window.location.href = "https://chat.whatsapp.com/your-community-invite-link";
+                
+                // Reset form button after short delay simulating redirect
+                setTimeout(() => {
+                    btn.innerHTML = orig; 
+                    btn.style.background = ''; 
+                    btn.disabled = false; 
+                    form.reset(); 
+                }, 2000);
+            }, 1500);
         });
     }
 });
