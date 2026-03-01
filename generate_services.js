@@ -274,7 +274,7 @@ const pages = [
     },
     {
         filename: 'data-analyst-skills.html',
-        title: 'Data Analyst Skills Course',
+        title: 'Data analytics with Gen AI',
         content: `
     <section class="section-services-list" style="padding: 120px 0 80px; background: #fff; min-height: 60vh;">
         <div class="container">
