@@ -127,34 +127,6 @@ document.addEventListener('DOMContentLoaded', () => {
         updateTimer();
     }
 
-    // Form Submit
-    const form = document.getElementById('registerForm');
-    if (form) {
-        form.addEventListener('submit', e => {
-            e.preventDefault();
-            const btn = form.querySelector('.btn-pay-now');
-            const orig = btn.innerHTML;
-            
-            // Show success and WhatsApp group link
-            btn.innerHTML = '<i class="fas fa-check-circle"></i> Redirecting to WhatsApp...';
-            btn.style.background = '#16a34a';
-            btn.disabled = true;
-            
-            setTimeout(() => { 
-                // Redirect logic for WhatsApp Community after payment (Demo link here)
-                window.location.href = "https://chat.whatsapp.com/your-community-invite-link";
-                
-                // Reset form button after short delay simulating redirect
-                setTimeout(() => {
-                    btn.innerHTML = orig; 
-                    btn.style.background = ''; 
-                    btn.disabled = false; 
-                    form.reset(); 
-                }, 1000);
-            }, 1000);
-        });
-    }
-
     // Lead Popup Logic
     const leadPopup = document.getElementById('leadPopup');
     const closeLeadPopup = document.getElementById('closeLeadPopup');
@@ -187,31 +159,93 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Popup Form Submission
-    const popupRegisterForm = document.getElementById('popupRegisterForm');
-    if (popupRegisterForm) {
-        popupRegisterForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const btn = popupRegisterForm.querySelector('.btn-pay-now');
-            const orig = btn.innerHTML;
+    // ============================================
+    // UNIFIED AJAX FORM SUBMIT FOR ALL FORMS
+    // ============================================
+    const forms = document.querySelectorAll('form[action^="https://formsubmit.co"]');
+    
+    // 1) Dynamically create and inject the custom Success Popup into the DOM once
+    const popupHTML = `
+        <div id="sucessPopupOverlay" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(15, 25, 41, 0.85); z-index:99999; display:flex; align-items:center; justify-content:center; opacity:0; visibility:hidden; transition:0.3s ease;">
+            <div style="background:#fff; padding:40px; border-radius:12px; max-width:400px; width:90%; text-align:center; transform:translateY(20px); transition:0.3s ease; box-shadow:0 20px 40px rgba(0,0,0,0.2);">
+                <div style="width:60px; height:60px; background:#10B981; color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:30px; margin:0 auto 20px auto;">
+                    <i class="fas fa-check"></i>
+                </div>
+                <h3 style="margin-bottom:10px; color:#0F1929; font-size:1.5rem;">Thank You!</h3>
+                <p style="color:#64748B; margin-bottom:25px; line-height:1.5;">Thank you for submitting! The team will get back to you shortly.</p>
+                <button id="closeSuccessPopup" style="background:#2563EB; color:#fff; border:none; padding:10px 30px; border-radius:6px; font-weight:600; cursor:pointer;">Close</button>
+            </div>
+        </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', popupHTML);
+    const successPopup = document.getElementById('sucessPopupOverlay');
+    const closeSuccessPopup = document.getElementById('closeSuccessPopup');
+    const popupContent = successPopup.querySelector('div');
+
+    const showSuccess = () => {
+        successPopup.style.opacity = '1';
+        successPopup.style.visibility = 'visible';
+        popupContent.style.transform = 'translateY(0)';
+    };
+    const hideSuccess = () => {
+        successPopup.style.opacity = '0';
+        successPopup.style.visibility = 'hidden';
+        popupContent.style.transform = 'translateY(20px)';
+    };
+    closeSuccessPopup.addEventListener('click', hideSuccess);
+
+    // 2) Attach AJAX logic to all forms
+    forms.forEach(form => {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault(); // Stop the default form redirection to formsubmit.co
             
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-            btn.style.background = '#16a34a'; // success color
-            btn.disabled = true;
+            const submitBtn = form.querySelector('button[type="submit"]') || form.querySelector('button');
+            const originalText = submitBtn ? submitBtn.innerHTML : 'Submit';
             
-            // Simulating API call/Redirect
-            setTimeout(() => { 
-                btn.innerHTML = '<i class="fas fa-check-circle"></i> Redirecting...';
-                setTimeout(() => {
-                    window.location.href = "https://chat.whatsapp.com/your-community-invite-link"; // Redirect
-                    // Reset
-                    btn.innerHTML = orig; 
-                    btn.style.background = ''; 
-                    btn.disabled = false;
-                    popupRegisterForm.reset();
+            if (submitBtn) {
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+                if(submitBtn.style){
+                    submitBtn.style.opacity = '0.7';
+                }
+                submitBtn.disabled = true;
+            }
+
+            const formData = new FormData(form);
+            
+            // Send standard FormSubmit ping utilizing exactly the target email URL on the form, but fetching as AJAX
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => response.ok ? response.json() : Promise.reject(response))
+            .then(data => {
+                // Success! Reset form and show our modal
+                form.reset();
+                if (submitBtn) {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                    submitBtn.style.opacity = '1';
+                }
+                
+                // Hide lead popup if the submission happened inside it
+                if (leadPopup && leadPopup.classList.contains('show')) {
                     leadPopup.classList.remove('show');
-                }, 1000);
-            }, 1000);
+                }
+                
+                showSuccess();
+            })
+            .catch(error => {
+                console.error('Error submitting form:', error);
+                alert("Something went wrong. Please try again later.");
+                if (submitBtn) {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                    submitBtn.style.opacity = '1';
+                }
+            });
         });
-    }
+    });
 });
