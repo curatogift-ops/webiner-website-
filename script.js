@@ -211,16 +211,28 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const formData = new FormData(form);
+            formData.append('_captcha', 'false'); // Disable FormSubmit's HTML CAPTCHA entirely.
             
-            // Send standard FormSubmit ping utilizing exactly the target email URL on the form, but fetching as AJAX
-            fetch(form.action, {
+            // For FormSubmit AJAX to work correctly and return JSON (not HTML), we MUST route through their /ajax/ endpoint.
+            let actionUrl = form.action;
+            if (!actionUrl.includes('/ajax/')) {
+                actionUrl = actionUrl.replace('formsubmit.co/', 'formsubmit.co/ajax/');
+            }
+            
+            fetch(actionUrl, {
                 method: 'POST',
                 body: formData,
                 headers: {
                     'Accept': 'application/json'
                 }
             })
-            .then(response => response.ok ? response.json() : Promise.reject(response))
+            .then(response => {
+                // Return json if possible, or reject if the response wasn't ok
+                if (response.ok) {
+                    return response.json().catch(() => ({})); // fallback if it still returns non-JSON
+                }
+                return Promise.reject(response);
+            })
             .then(data => {
                 // Success! Reset form and show our modal
                 form.reset();
