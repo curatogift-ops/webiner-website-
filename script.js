@@ -197,7 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             popupTitle.innerText = "Submission Successful!";
             popupMessage.innerText = "Thank you for your inquiry. Our team will get back to you shortly.";
-            popupWhatsApp.style.display = 'block'; // Keep it for inquiries too as a suggestion
+            popupWhatsApp.style.display = 'none'; // Hide for general inquiries as requested
         }
 
         successPopup.style.opacity = '1';
