@@ -171,9 +171,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div style="width:60px; height:60px; background:#10B981; color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:30px; margin:0 auto 20px auto;">
                     <i class="fas fa-check"></i>
                 </div>
-                <h3 style="margin-bottom:10px; color:#0F1929; font-size:1.5rem;">Payment Successful!</h3>
-                <p style="color:#64748B; margin-bottom:25px; line-height:1.5;">Thank you for registering. You are now being redirected to our WhatsApp Community.</p>
-                <a href="https://chat.whatsapp.com/FswA4ROz5wcLVCDF9uyQER" style="display:inline-block; background:#25D366; color:#fff; text-decoration:none; padding:12px 24px; border-radius:6px; font-weight:600; margin-bottom:10px; width:100%;"><i class="fab fa-whatsapp"></i> Join WhatsApp Group</a>
+                <h3 id="popupTitle" style="margin-bottom:10px; color:#0F1929; font-size:1.5rem;">Thank You!</h3>
+                <p id="popupMessage" style="color:#64748B; margin-bottom:25px; line-height:1.5;">Your message has been sent successfully.</p>
+                <div id="popupWhatsAppContainer">
+                    <a href="https://chat.whatsapp.com/FswA4ROz5wcLVCDF9uyQER" style="display:inline-block; background:#25D366; color:#fff; text-decoration:none; padding:12px 24px; border-radius:6px; font-weight:600; margin-bottom:10px; width:100%;"><i class="fab fa-whatsapp"></i> Join WhatsApp Group</a>
+                </div>
                 <button id="closeSuccessPopup" style="background:#f1f5f9; color:#64748B; border:none; padding:10px 30px; border-radius:6px; font-weight:600; cursor:pointer; width:100%;">Close</button>
             </div>
         </div>
@@ -183,7 +185,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeSuccessPopup = document.getElementById('closeSuccessPopup');
     const popupContent = successPopup.querySelector('div');
 
-    const showSuccess = () => {
+    const showSuccess = (isPayment = false) => {
+        const popupTitle = document.getElementById('popupTitle');
+        const popupMessage = document.getElementById('popupMessage');
+        const popupWhatsApp = document.getElementById('popupWhatsAppContainer');
+
+        if (isPayment) {
+            popupTitle.innerText = "Payment Successful!";
+            popupMessage.innerText = "Thank you for registering. You are now being redirected to our WhatsApp Community.";
+            popupWhatsApp.style.display = 'block';
+        } else {
+            popupTitle.innerText = "Submission Successful!";
+            popupMessage.innerText = "Thank you for your inquiry. Our team will get back to you shortly.";
+            popupWhatsApp.style.display = 'block'; // Keep it for inquiries too as a suggestion
+        }
+
         successPopup.style.opacity = '1';
         successPopup.style.visibility = 'visible';
         popupContent.style.transform = 'translateY(0)';
@@ -254,7 +270,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                     
                     // Show success popup with WhatsApp link or redirect
-                    showSuccess();
+                    showSuccess(isPaymentForm);
                     
                     // Auto redirect to WhatsApp after a short delay if it was a payment
                     if (isPaymentForm) {
