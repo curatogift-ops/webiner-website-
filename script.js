@@ -171,9 +171,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div style="width:60px; height:60px; background:#10B981; color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:30px; margin:0 auto 20px auto;">
                     <i class="fas fa-check"></i>
                 </div>
-                <h3 style="margin-bottom:10px; color:#0F1929; font-size:1.5rem;">Thank You!</h3>
-                <p style="color:#64748B; margin-bottom:25px; line-height:1.5;">Thank you for submitting! The team will get back to you shortly.</p>
-                <button id="closeSuccessPopup" style="background:#2563EB; color:#fff; border:none; padding:10px 30px; border-radius:6px; font-weight:600; cursor:pointer;">Close</button>
+                <h3 style="margin-bottom:10px; color:#0F1929; font-size:1.5rem;">Payment Successful!</h3>
+                <p style="color:#64748B; margin-bottom:25px; line-height:1.5;">Thank you for registering. You are now being redirected to our WhatsApp Community.</p>
+                <a href="https://chat.whatsapp.com/FswA4ROz5wcLVCDF9uyQER" style="display:inline-block; background:#25D366; color:#fff; text-decoration:none; padding:12px 24px; border-radius:6px; font-weight:600; margin-bottom:10px; width:100%;"><i class="fab fa-whatsapp"></i> Join WhatsApp Group</a>
+                <button id="closeSuccessPopup" style="background:#f1f5f9; color:#64748B; border:none; padding:10px 30px; border-radius:6px; font-weight:600; cursor:pointer; width:100%;">Close</button>
             </div>
         </div>
     `;
@@ -197,67 +198,120 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2) Attach AJAX logic to all forms
     forms.forEach(form => {
         form.addEventListener('submit', function(e) {
-            e.preventDefault(); // Stop the default form redirection to formsubmit.co
+            e.preventDefault(); // Stop the default form redirection
             
             const submitBtn = form.querySelector('button[type="submit"]') || form.querySelector('button');
             const originalText = submitBtn ? submitBtn.innerHTML : 'Submit';
             
-            if (submitBtn) {
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-                if(submitBtn.style){
-                    submitBtn.style.opacity = '0.7';
-                }
-                submitBtn.disabled = true;
-            }
-
+            // Collect form data
             const formData = new FormData(form);
-            formData.append('_captcha', 'false'); // Disable FormSubmit's HTML CAPTCHA entirely.
-            
-            // For FormSubmit AJAX to work correctly and return JSON (not HTML), we MUST route through their /ajax/ endpoint.
-            let actionUrl = form.action;
-            if (!actionUrl.includes('/ajax/')) {
-                actionUrl = actionUrl.replace('formsubmit.co/', 'formsubmit.co/ajax/');
+            const formObj = {};
+            formData.forEach((value, key) => { formObj[key] = value; });
+
+            // Check if this is a payment form (Masterclass registration)
+            const isPaymentForm = form.id === 'registerForm' || form.id === 'popupRegisterForm';
+
+            const processFormSubmission = () => {
+                if (submitBtn) {
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+                    if(submitBtn.style){
+                        submitBtn.style.opacity = '0.7';
+                    }
+                    submitBtn.disabled = true;
+                }
+
+                formData.append('_captcha', 'false'); // Disable FormSubmit's HTML CAPTCHA
+                
+                // For FormSubmit AJAX to work correctly and return JSON (not HTML), we MUST route through their /ajax/ endpoint.
+                let actionUrl = form.action;
+                if (!actionUrl.includes('/ajax/')) {
+                    actionUrl = actionUrl.replace('formsubmit.co/', 'formsubmit.co/ajax/');
+                }
+                
+                fetch(actionUrl, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json().catch(() => ({})); 
+                    }
+                    return Promise.reject(response);
+                })
+                .then(data => {
+                    form.reset();
+                    if (submitBtn) {
+                        submitBtn.innerHTML = originalText;
+                        submitBtn.disabled = false;
+                        submitBtn.style.opacity = '1';
+                    }
+                    
+                    if (leadPopup && leadPopup.classList.contains('show')) {
+                        leadPopup.classList.remove('show');
+                    }
+                    
+                    // Show success popup with WhatsApp link or redirect
+                    showSuccess();
+                    
+                    // Auto redirect to WhatsApp after a short delay if it was a payment
+                    if (isPaymentForm) {
+                        setTimeout(() => {
+                            window.location.href = "https://chat.whatsapp.com/FswA4ROz5wcLVCDF9uyQER";
+                        }, 2000);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error submitting form:', error);
+                    alert("Something went wrong. Please try again later.");
+                    if (submitBtn) {
+                        submitBtn.innerHTML = originalText;
+                        submitBtn.disabled = false;
+                        submitBtn.style.opacity = '1';
+                    }
+                });
+            };
+
+            if (isPaymentForm) {
+                // Razorpay configuration
+                const options = {
+                    "key": "rzp_live_SUxGbSVsRtbLiG", // Live Key ID
+                    "amount": 19900, // Amount in paise (199 * 100)
+                    "currency": "INR",
+                    "name": "Mishra Growth Solution",
+                    "description": "Live ATS Resume Masterclass",
+                    "image": "logo.jpeg",
+                    "handler": function (response) {
+                        // Payment successful
+                        formData.append('Razorpay Payment ID', response.razorpay_payment_id);
+                        processFormSubmission();
+                    },
+                    "prefill": {
+                        "name": formObj['Full Name'] || "",
+                        "email": formObj['Email ID'] || "",
+                        "contact": formObj['WhatsApp Number'] || ""
+                    },
+                    "theme": {
+                        "color": "#14B8A6"
+                    },
+                    "modal": {
+                        "ondismiss": function() {
+                            if (submitBtn) {
+                                submitBtn.innerHTML = originalText;
+                                submitBtn.disabled = false;
+                                submitBtn.style.opacity = '1';
+                            }
+                        }
+                    }
+                };
+                const rzp = new Razorpay(options);
+                rzp.open();
+            } else {
+                // Not a payment form, just process normally
+                processFormSubmission();
             }
-            
-            fetch(actionUrl, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'Accept': 'application/json'
-                }
-            })
-            .then(response => {
-                // Return json if possible, or reject if the response wasn't ok
-                if (response.ok) {
-                    return response.json().catch(() => ({})); // fallback if it still returns non-JSON
-                }
-                return Promise.reject(response);
-            })
-            .then(data => {
-                // Success! Reset form and show our modal
-                form.reset();
-                if (submitBtn) {
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.disabled = false;
-                    submitBtn.style.opacity = '1';
-                }
-                
-                // Hide lead popup if the submission happened inside it
-                if (leadPopup && leadPopup.classList.contains('show')) {
-                    leadPopup.classList.remove('show');
-                }
-                
-                showSuccess();
-            })
-            .catch(error => {
-                console.error('Error submitting form:', error);
-                alert("Something went wrong. Please try again later.");
-                if (submitBtn) {
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.disabled = false;
-                    submitBtn.style.opacity = '1';
-                }
-            });
         });
     });
 });
